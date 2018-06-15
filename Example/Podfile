@@ -2,10 +2,4 @@ use_frameworks!
 
 target 'CircularSectorContextSheet_Example' do
   pod 'CircularSectorContextSheet', :path => '../'
-
-  target 'CircularSectorContextSheet_Tests' do
-    inherit! :search_paths
-
-    
-  end
 end
