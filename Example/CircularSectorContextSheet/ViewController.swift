@@ -59,7 +59,7 @@ final class ViewController: UIViewController, CircularSectorContextSheetDelegate
 
 
     // MARK: ContextSheetDelegate
-    func contextSheet(_ contextSheet: CircularSectorContextSheet, didSelect item: CircularSectorContextSheetItem.Identifier) {
+    func contextSheet(_ contextSheet: CircularSectorContextSheet, didSelect item: CircularSectorContextSheetItem.Identifier, userInfo: [String: Any]?) {
         switch item {
         case "one":
             print("Selected 1")

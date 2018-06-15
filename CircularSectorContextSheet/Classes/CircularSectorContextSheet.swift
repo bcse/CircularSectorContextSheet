@@ -33,7 +33,7 @@ func vectorLength(_ vector: CGPoint) -> CGFloat{
 }
 
 public protocol CircularSectorContextSheetDelegate: AnyObject {
-    func contextSheet(_ contextSheet: CircularSectorContextSheet, didSelect item: CircularSectorContextSheetItem.Identifier)
+    func contextSheet(_ contextSheet: CircularSectorContextSheet, didSelect item: CircularSectorContextSheetItem.Identifier, userInfo: [String: Any]?)
 }
 
 open class CircularSectorContextSheet: UIView {
@@ -52,6 +52,7 @@ open class CircularSectorContextSheet: UIView {
     var openAnimationFinished: Bool = false
     var touchCenter: CGPoint = CGPoint.zero
     var starterGestureRecognizer: UIGestureRecognizer?
+    var userInfo: [String: Any]?
     
     public init(items: [CircularSectorContextSheetItem]) {
         self.items = items
@@ -62,10 +63,11 @@ open class CircularSectorContextSheet: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    open func start(gestureRecognizer: UIGestureRecognizer, in view: UIView) {
+    open func start(gestureRecognizer: UIGestureRecognizer, in view: UIView, userInfo: [String: Any]? = nil) {
         if itemViews.count != items.count {
             self.reload()
         }
+        self.userInfo = userInfo
         
         view.addSubview(self)
         
@@ -88,7 +90,8 @@ open class CircularSectorContextSheet: UIView {
         starterGestureRecognizer?.removeTarget(self, action: #selector(gestureRecognizedStateObserver(_:)))
         
         if let selectedItemIndex = selectedItemIndex, selectedItemIndex < items.count {
-            delegate?.contextSheet(self, didSelect: items[selectedItemIndex].identifier)
+            delegate?.contextSheet(self, didSelect: items[selectedItemIndex].identifier, userInfo: userInfo)
+            userInfo = nil
         }
         
         closeItemsToCenterView()
