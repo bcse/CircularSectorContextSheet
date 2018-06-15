@@ -338,7 +338,8 @@ extension CircularSectorContextSheet {
         
         if let itemView = itemView, fabs(touchDistance) > maximumTouchDistance {
             itemView.setHighlighted(true, animated: true)
-            selectedItemIndex = itemIndex
         }
+
+        selectedItemIndex = itemIndex
     }
 }
