@@ -6,13 +6,13 @@ public struct CircularSectorContextSheetItem {
     let identifier: Identifier
     let title: String?
     let image: UIImage?
-    let highlighedImage: UIImage?
+    let highlightedImage: UIImage?
     
-    public init(identifier: Identifier, title: String? = nil, image: UIImage? = nil, highlighedImage: UIImage? = nil) {
+    public init(identifier: Identifier, title: String? = nil, image: UIImage? = nil, highlightedImage: UIImage? = nil) {
         self.identifier = identifier
         self.title = title
         self.image = image
-        self.highlighedImage = highlighedImage
+        self.highlightedImage = highlightedImage
     }
 }
 
@@ -137,7 +137,7 @@ extension CircularSectorContextSheet {
         itemViews = items.map { item in
             let itemView = CircularSectorContextSheetItemView(frame: CGRect(x: 0, y: 0, width: 50, height: 83))
             itemView.image = item.image
-            itemView.highlightedImage = item.highlighedImage
+            itemView.highlightedImage = item.highlightedImage
             itemView.title = item.title
             addSubview(itemView)
             return itemView

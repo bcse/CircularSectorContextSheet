@@ -4,11 +4,11 @@ import CircularSectorContextSheet
 final class ViewController: UIViewController, CircularSectorContextSheetDelegate {
     
     var contextSheet: CircularSectorContextSheet?
-    let contextSheetItems = [CircularSectorContextSheetItem(identifier: "one", title: "One", image: UIImage(named: "share"), highlighedImage: UIImage(named: "share_b")),
-                             CircularSectorContextSheetItem(identifier: "two", title: "Two", image: UIImage(named: "share"), highlighedImage: UIImage(named: "share_b")),
-                             CircularSectorContextSheetItem(identifier: "three", title: "Three", image: UIImage(named: "share"), highlighedImage: UIImage(named: "share_b")),
-                             CircularSectorContextSheetItem(identifier: "four", title: "Four", image: UIImage(named: "share"), highlighedImage: UIImage(named: "share_b")),
-                             CircularSectorContextSheetItem(identifier: "five", title: "Five", image: UIImage(named: "share"), highlighedImage: UIImage(named: "share_b"))]
+    let contextSheetItems = [CircularSectorContextSheetItem(identifier: "one", title: "One", image: UIImage(named: "share"), highlightedImage: UIImage(named: "share_b")),
+                             CircularSectorContextSheetItem(identifier: "two", title: "Two", image: UIImage(named: "share"), highlightedImage: UIImage(named: "share_b")),
+                             CircularSectorContextSheetItem(identifier: "three", title: "Three", image: UIImage(named: "share"), highlightedImage: UIImage(named: "share_b")),
+                             CircularSectorContextSheetItem(identifier: "four", title: "Four", image: UIImage(named: "share"), highlightedImage: UIImage(named: "share_b")),
+                             CircularSectorContextSheetItem(identifier: "five", title: "Five", image: UIImage(named: "share"), highlightedImage: UIImage(named: "share_b"))]
 
     override func viewDidLoad() {
         super.viewDidLoad()
