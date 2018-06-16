@@ -41,6 +41,7 @@ open class CircularSectorContextSheet: UIView {
     open var maximumAngle = CGFloat.pi / 1.6
     open var maximumInteritemAngle = CGFloat.pi / 4
     open var maximumTouchDistance: CGFloat = 40
+    open var maximumTouchDistanceToCenter: CGFloat = 20
 
     var _hapticFeedbackEnabled: Bool = false
     open var hapticFeedbackEnabled: Bool {
@@ -170,8 +171,8 @@ extension CircularSectorContextSheet {
             if let sampleItemView = itemViews.first {
                 let centerView = UIView(frame: CGRect(x: 0, y: 0, width: sampleItemView.frame.width, height: sampleItemView.frame.width))
                 centerView.layer.cornerRadius = 25
-                centerView.layer.borderWidth = 2
-                centerView.layer.borderColor = UIColor.gray.cgColor
+                centerView.layer.borderWidth = 4
+                centerView.layer.borderColor = UIColor(white: 1, alpha: 0.05).cgColor
                 addSubview(centerView)
                 return centerView
             }
@@ -180,7 +181,7 @@ extension CircularSectorContextSheet {
     }
     
     func setCenterViewHighlighted(_ highlighted: Bool) {
-        centerView?.backgroundColor = highlighted ? UIColor(white: 0.5, alpha: 0.4) : nil
+        centerView?.backgroundColor = highlighted ? UIColor(white: 0.75, alpha: 0.05) : nil
     }
     
     func update(itemView: CircularSectorContextSheetItemView, touchDistance: CGFloat, animated: Bool) {
@@ -296,7 +297,7 @@ extension CircularSectorContextSheet {
         var itemView = itemViewForTouchVector(touchVector)
         let touchDistance = vectorLength(touchVector)
         
-        if fabs(touchDistance) <= maximumTouchDistance {
+        if fabs(touchDistance) <= maximumTouchDistanceToCenter {
             itemView = nil
             centerView?.center = CGPoint(x: touchCenter.x + touchVector.x, y: touchCenter.y + touchVector.y)
             setCenterViewHighlighted(true)
@@ -305,8 +306,8 @@ extension CircularSectorContextSheet {
             
             UIView.animate(withDuration: 0.4,
                            delay: 0,
-                           usingSpringWithDamping: 0.35,
-                           initialSpringVelocity: 7.5,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 0,
                            options: [.beginFromCurrentState],
                            animations: { self.centerView?.center = self.touchCenter },
                            completion: nil)
