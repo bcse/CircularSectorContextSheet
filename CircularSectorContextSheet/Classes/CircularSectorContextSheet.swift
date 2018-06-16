@@ -40,7 +40,7 @@ open class CircularSectorContextSheet: UIView {
     open weak var delegate: CircularSectorContextSheetDelegate?
     open var maximumAngle = CGFloat.pi / 1.6
     open var maximumInteritemAngle = CGFloat.pi / 4
-    open var maximumTouchDistance: CGFloat = 40
+    open var maximumTouchDistance: CGFloat = 50
     open var maximumTouchDistanceToCenter: CGFloat = 20
 
     var _hapticFeedbackEnabled: Bool = false
@@ -205,10 +205,8 @@ extension CircularSectorContextSheet {
         if !animated {
             fn()
         } else {
-            UIView.animate(withDuration: 0.4,
+            UIView.animate(withDuration: 0.3,
                            delay: 0,
-                           usingSpringWithDamping: 0.45,
-                           initialSpringVelocity: 7.5,
                            options: [.beginFromCurrentState],
                            animations: fn,
                            completion: nil)
@@ -294,57 +292,46 @@ extension CircularSectorContextSheet {
     
     func updateItemViewsForTouchPoint(_ touchPoint: CGPoint) {
         let touchVector = CGPoint(x: touchPoint.x - touchCenter.x, y: touchPoint.y - touchCenter.y)
-        var itemView = itemViewForTouchVector(touchVector)
+        let itemView = itemViewForTouchVector(touchVector)
         let touchDistance = vectorLength(touchVector)
         
         if fabs(touchDistance) <= maximumTouchDistanceToCenter {
-            itemView = nil
             centerView?.center = CGPoint(x: touchCenter.x + touchVector.x, y: touchCenter.y + touchVector.y)
             setCenterViewHighlighted(true)
         } else {
             setCenterViewHighlighted(false)
             
-            UIView.animate(withDuration: 0.4,
+            UIView.animate(withDuration: 0.2,
                            delay: 0,
-                           usingSpringWithDamping: 0.5,
-                           initialSpringVelocity: 0,
                            options: [.beginFromCurrentState],
                            animations: { self.centerView?.center = self.touchCenter },
                            completion: nil)
         }
-        
-        if touchDistance > radius + maximumTouchDistance {
+
+        let itemIndex: Int? = {
             if let itemView = itemView {
-                itemView.setHighlighted(false, animated: true)
-                update(itemView: itemView, touchDistance: 0, animated: true)
+                let touchVector = CGPoint(x: touchPoint.x - itemView.center.x, y: touchPoint.y - itemView.center.y)
+                if vectorLength(touchVector) < maximumTouchDistance {
+                    return itemViews.index(of: itemView)
+                }
             }
-            selectedItemIndex = nil
-            return
-        }
+            return nil
+        }()
         
-        let itemIndex: Int? = (itemView != nil) ? itemViews.index(of: itemView!) : nil
         if itemIndex != selectedItemIndex {
             if let selectedItemIndex = selectedItemIndex {
                 let selectedItemView = itemViews[selectedItemIndex]
                 selectedItemView.setHighlighted(false, animated: true)
                 update(itemView: selectedItemView, touchDistance: 0, animated: true)
             }
-            if let itemView = itemView {
-                update(itemView: itemView, touchDistance: touchDistance, animated: true)
+            if itemIndex != nil, let itemView = itemView {
+                itemView.setHighlighted(true, animated: true)
                 bringSubview(toFront: itemView)
-            }
-        } else {
-            if let itemView = itemView {
-                update(itemView: itemView, touchDistance: touchDistance, animated: false)
+                selectionFeedbackGenerator?.selectionChanged()
             }
         }
-        
-        if let itemView = itemView, fabs(touchDistance) > maximumTouchDistance {
-            itemView.setHighlighted(true, animated: true)
-        }
-        
-        if itemIndex != selectedItemIndex, itemIndex != nil {
-            selectionFeedbackGenerator?.selectionChanged()
+        if let itemView = itemView {
+            update(itemView: itemView, touchDistance: touchDistance, animated: false)
         }
 
         selectedItemIndex = itemIndex
