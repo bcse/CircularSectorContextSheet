@@ -42,6 +42,23 @@ open class CircularSectorContextSheet: UIView {
     open var maximumInteritemAngle = CGFloat.pi / 4
     open var maximumTouchDistance: CGFloat = 40
 
+    var _hapticFeedbackEnabled: Bool = false
+    open var hapticFeedbackEnabled: Bool {
+        get {
+            return _hapticFeedbackEnabled
+        }
+        set(newVal) {
+            _hapticFeedbackEnabled = newVal
+            if (_hapticFeedbackEnabled) {
+                impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+                selectionFeedbackGenerator = UISelectionFeedbackGenerator()
+            } else {
+                impactFeedbackGenerator = nil
+                selectionFeedbackGenerator = nil
+            }
+        }
+    }
+
     var radius: CGFloat = 100
     var rotation: CGFloat = 0
     let items: [CircularSectorContextSheetItem]
@@ -52,6 +69,8 @@ open class CircularSectorContextSheet: UIView {
     var openAnimationFinished: Bool = false
     var touchCenter: CGPoint = CGPoint.zero
     var starterGestureRecognizer: UIGestureRecognizer?
+    var impactFeedbackGenerator: UIImpactFeedbackGenerator?
+    var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
     var userInfo: [String: Any]?
     
     public init(items: [CircularSectorContextSheetItem]) {
@@ -212,6 +231,8 @@ extension CircularSectorContextSheet {
                            animations: { self.update(itemView: itemView, touchDistance: 0, animated: false) },
                            completion: { _ in self.openAnimationFinished = true })
         }
+        
+        impactFeedbackGenerator?.impactOccurred()
     }
     
     func closeItemsToCenterView() {
@@ -339,6 +360,10 @@ extension CircularSectorContextSheet {
         
         if let itemView = itemView, fabs(touchDistance) > maximumTouchDistance {
             itemView.setHighlighted(true, animated: true)
+        }
+        
+        if itemIndex != selectedItemIndex, itemIndex != nil {
+            selectionFeedbackGenerator?.selectionChanged()
         }
 
         selectedItemIndex = itemIndex

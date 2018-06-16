@@ -14,6 +14,7 @@ final class ViewController: UIViewController, CircularSectorContextSheetDelegate
         super.viewDidLoad()
         
         contextSheet = CircularSectorContextSheet(items: Array(contextSheetItems[..<3]))
+        contextSheet?.hapticFeedbackEnabled = true
         contextSheet?.delegate = self
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
@@ -23,30 +24,35 @@ final class ViewController: UIViewController, CircularSectorContextSheetDelegate
     @IBAction func one(_ sender: Any) {
         contextSheet?.removeFromSuperview()
         contextSheet = CircularSectorContextSheet(items: Array(contextSheetItems[..<1]))
+        contextSheet?.hapticFeedbackEnabled = true
         contextSheet?.delegate = self
     }
     
     @IBAction func two(_ sender: Any) {
         contextSheet?.removeFromSuperview()
         contextSheet = CircularSectorContextSheet(items: Array(contextSheetItems[..<2]))
+        contextSheet?.hapticFeedbackEnabled = true
         contextSheet?.delegate = self
     }
     
     @IBAction func three(_ sender: Any) {
         contextSheet?.removeFromSuperview()
         contextSheet = CircularSectorContextSheet(items: Array(contextSheetItems[..<3]))
+        contextSheet?.hapticFeedbackEnabled = true
         contextSheet?.delegate = self
     }
     
     @IBAction func four(_ sender: Any) {
         contextSheet?.removeFromSuperview()
         contextSheet = CircularSectorContextSheet(items: Array(contextSheetItems[..<4]))
+        contextSheet?.hapticFeedbackEnabled = true
         contextSheet?.delegate = self
     }
 
     @IBAction func five(_ sender: Any) {
         contextSheet?.removeFromSuperview()
         contextSheet = CircularSectorContextSheet(items: Array(contextSheetItems[..<5]))
+        contextSheet?.hapticFeedbackEnabled = true
         contextSheet?.delegate = self
         contextSheet?.maximumAngle = .pi * 0.8
     }
