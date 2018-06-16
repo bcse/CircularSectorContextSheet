@@ -292,11 +292,11 @@ extension CircularSectorContextSheet {
     
     func updateItemViewsForTouchPoint(_ touchPoint: CGPoint) {
         let touchVector = CGPoint(x: touchPoint.x - touchCenter.x, y: touchPoint.y - touchCenter.y)
-        let itemView = itemViewForTouchVector(touchVector)
-        let itemIndex: Int? = (itemView != nil) ? itemViews.index(of: itemView!) : nil
+        var itemView = itemViewForTouchVector(touchVector)
         let touchDistance = signedTouchDistanceForTouchVector(touchVector, itemView: itemView)
         
         if fabs(touchDistance) <= maximumTouchDistance {
+            itemView = nil
             centerView?.center = CGPoint(x: touchCenter.x + touchVector.x, y: touchCenter.y + touchVector.y)
             setCenterViewHighlighted(true)
         } else {
@@ -320,6 +320,7 @@ extension CircularSectorContextSheet {
             return
         }
         
+        let itemIndex: Int? = (itemView != nil) ? itemViews.index(of: itemView!) : nil
         if itemIndex != selectedItemIndex {
             if let selectedItemIndex = selectedItemIndex {
                 let selectedItemView = itemViews[selectedItemIndex]
