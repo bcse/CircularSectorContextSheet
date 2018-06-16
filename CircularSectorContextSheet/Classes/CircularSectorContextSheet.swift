@@ -330,7 +330,7 @@ extension CircularSectorContextSheet {
                 selectionFeedbackGenerator?.selectionChanged()
             }
         }
-        if let itemView = itemView {
+        if let itemView = itemView, touchDistance < radius + maximumTouchDistance {
             update(itemView: itemView, touchDistance: touchDistance, animated: false)
         }
 
