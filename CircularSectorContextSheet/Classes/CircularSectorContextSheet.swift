@@ -272,26 +272,6 @@ extension CircularSectorContextSheet {
         }
     }
     
-    func signedTouchDistanceForTouchVector(_ touchVector: CGPoint, itemView: CircularSectorContextSheetItemView?) -> CGFloat {
-        var touchDistance = vectorLength(touchVector)
-        
-        if let itemView = itemView {
-            let oldCenter = itemView.center
-            let oldTransform = itemView.transform
-            
-            self.update(itemView: itemView, touchDistance: radius + 40, animated: false)
-            
-            if !bounds.contains(itemView.frame) {
-                touchDistance = -touchDistance
-            }
-            
-            itemView.center = oldCenter
-            itemView.transform = oldTransform
-        }
-        
-        return touchDistance
-    }
-    
     func itemViewForTouchVector(_ touchVector: CGPoint) -> CircularSectorContextSheetItemView? {
         var maxCosOfAngle: CGFloat = -2
         var resultItemView: CircularSectorContextSheetItemView?
@@ -314,7 +294,7 @@ extension CircularSectorContextSheet {
     func updateItemViewsForTouchPoint(_ touchPoint: CGPoint) {
         let touchVector = CGPoint(x: touchPoint.x - touchCenter.x, y: touchPoint.y - touchCenter.y)
         var itemView = itemViewForTouchVector(touchVector)
-        let touchDistance = signedTouchDistanceForTouchVector(touchVector, itemView: itemView)
+        let touchDistance = vectorLength(touchVector)
         
         if fabs(touchDistance) <= maximumTouchDistance {
             itemView = nil
