@@ -18,7 +18,7 @@ public struct CircularSectorContextSheetItem {
 
 func orientedScreenBounds() -> CGRect {
     var bounds = UIScreen.main.bounds
-    if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation), bounds.width < bounds.height {
+    if UIApplication.shared.statusBarOrientation.isLandscape, bounds.width < bounds.height {
         bounds.size = CGSize(width: bounds.height, height: bounds.width)
     }
     return bounds
@@ -186,7 +186,7 @@ extension CircularSectorContextSheet {
     
     func update(itemView: CircularSectorContextSheetItemView, touchDistance: CGFloat, animated: Bool) {
         let fn = {
-            let itemIndex = self.itemViews.index(of: itemView) ?? 0
+            let itemIndex = self.itemViews.firstIndex(of: itemView) ?? 0
             var interItemAngle: CGFloat = 0
             var maximumAngle: CGFloat = 0
             if self.itemViews.count >= 2 {
@@ -195,7 +195,7 @@ extension CircularSectorContextSheet {
             }
             let angle = self.rotation + maximumAngle / 2 - CGFloat(itemIndex) * interItemAngle
             let resistanceFactor: CGFloat = 1.0 / (touchDistance > 0 ? 6.0 : 3.0)
-            let scale = 1 + 0.2 * fabs(touchDistance) / self.radius
+            let scale = 1 + 0.2 * abs(touchDistance) / self.radius
             
             itemView.center = CGPoint(x: self.touchCenter.x + (self.radius + touchDistance * resistanceFactor) * sin(angle),
                                       y: self.touchCenter.y + (self.radius + touchDistance * resistanceFactor) * cos(angle))
@@ -295,7 +295,7 @@ extension CircularSectorContextSheet {
         let itemView = itemViewForTouchVector(touchVector)
         let touchDistance = vectorLength(touchVector)
         
-        if fabs(touchDistance) <= maximumTouchDistanceToCenter {
+        if abs(touchDistance) <= maximumTouchDistanceToCenter {
             centerView?.center = CGPoint(x: touchCenter.x + touchVector.x, y: touchCenter.y + touchVector.y)
             setCenterViewHighlighted(true)
         } else {
@@ -312,7 +312,7 @@ extension CircularSectorContextSheet {
             if let itemView = itemView {
                 let touchVector = CGPoint(x: touchPoint.x - itemView.center.x, y: touchPoint.y - itemView.center.y)
                 if vectorLength(touchVector) < maximumTouchDistance {
-                    return itemViews.index(of: itemView)
+                    return itemViews.firstIndex(of: itemView)
                 }
             }
             return nil
@@ -326,7 +326,7 @@ extension CircularSectorContextSheet {
             }
             if itemIndex != nil, let itemView = itemView {
                 itemView.setHighlighted(true, animated: true)
-                bringSubview(toFront: itemView)
+                bringSubviewToFront(itemView)
                 selectionFeedbackGenerator?.selectionChanged()
             }
         }

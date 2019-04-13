@@ -63,8 +63,8 @@ class CircularSectorContextSheetItemView: UIView {
         let imageRect = CGRect(x: 0, y: (frame.height - frame.width) / 2, width: frame.width, height: frame.width)
         imageView?.frame = imageRect
         highlightedImageView?.frame = imageRect
-        if let titleLabel = titleLabel, let title = title {
-            let labelWidth = 2 * textPadding + ceil((title as NSString).size(withAttributes: [.font : titleLabel.font]).width)
+        if let titleLabel = titleLabel, let font = titleLabel.font, let title = title {
+            let labelWidth = 2 * textPadding + ceil((title as NSString).size(withAttributes: [.font : font]).width)
             titleLabel.frame = CGRect(x: (frame.width - labelWidth) / 2, y: 0, width: labelWidth, height: 14)
         }
     }
